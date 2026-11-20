@@ -1,4 +1,3 @@
-
 # PYRA - Lexical Analyzer
 
 from .tokens import (
