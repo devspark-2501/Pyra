@@ -1,25 +1,36 @@
 
-# PYRA - Programming Language Interpreter
+# PYRA - Main Entry Point
 
 from lexer.lexer import Lexer
+from parser.parser import Parser
 
 
 def run(source_code):
-    # Step 1: Create Lexer
-    lexer = Lexer(source_code)
 
-    # Step 2: Convert source code into tokens
+    # Stage 1: Lexical Analysis
+    lexer = Lexer(source_code)
     tokens = lexer.tokenize()
 
-    # Step 3: Display tokens
-    for token in tokens:
-        print(token)
+    # Stage 2: Syntax Analysis
+    parser = Parser(tokens)
+    syntax_tree = parser.parse()
+
+    print("PYRA: Parsing successful!")
+    print("Total statements:", len(syntax_tree.statements))
 
 
-# Test Pyra source code
 source_code = """
-let age = 16 + 5
-print(age)
+let name = "Tanush"
+let age = 16
+
+let result = 10 + 20 * 3
+
+print(name)
+print(result)
+
+if age >= 16 {
+    print("Welcome to Pyra!")
+}
 """
 
 run(source_code)
