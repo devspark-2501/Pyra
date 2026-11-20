@@ -3,6 +3,7 @@
 
 from lexer.lexer import Lexer
 from parser.parser import Parser
+from interpreter.interpreter import Interpreter
 
 
 def run(source_code):
@@ -15,21 +16,33 @@ def run(source_code):
     parser = Parser(tokens)
     syntax_tree = parser.parse()
 
-    print("PYRA: Parsing successful!")
-    print("Total statements:", len(syntax_tree.statements))
+    # Stage 3: Execution
+    interpreter = Interpreter()
+    interpreter.interpret(syntax_tree)
 
 
 source_code = """
-let name = "Tanush"
-let age = 16
+let age = 16 + 5
+print(age)
 
-let result = 10 + 20 * 3
+let count = 0
 
-print(name)
+while count < 3 {
+    print(count)
+    count = count + 1
+}
+
+fn add(a, b) {
+    return a + b
+}
+
+let result = add(10, 20)
 print(result)
 
-if age >= 16 {
-    print("Welcome to Pyra!")
+if result >= 30 {
+    print("PYRA is working!")
+} else {
+    print("Something went wrong")
 }
 """
 
