@@ -1,0 +1,23 @@
+
+# Functions and return values
+
+fn greet(name) {
+    print("Hello!")
+    print(name)
+}
+
+fn add(a, b) {
+    return a + b
+}
+
+fn multiply(a, b) {
+    return a * b
+}
+
+greet("Tanush")
+
+let sum = add(10, 20)
+let product = multiply(5, 4)
+
+print(sum)
+print(product)
