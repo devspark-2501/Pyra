@@ -1,6 +1,8 @@
 
 # PYRA - Main Entry Point
 
+import sys
+
 from lexer.lexer import Lexer
 from parser.parser import Parser
 from interpreter.interpreter import Interpreter
@@ -8,42 +10,47 @@ from interpreter.interpreter import Interpreter
 
 def run(source_code):
 
-    # Stage 1: Lexical Analysis
-    lexer = Lexer(source_code)
-    tokens = lexer.tokenize()
+    try:
+        # Stage 1: Lexical Analysis
+        lexer = Lexer(source_code)
+        tokens = lexer.tokenize()
 
-    # Stage 2: Syntax Analysis
-    parser = Parser(tokens)
-    syntax_tree = parser.parse()
+        # Stage 2: Syntax Analysis
+        parser = Parser(tokens)
+        syntax_tree = parser.parse()
 
-    # Stage 3: Execution
-    interpreter = Interpreter()
-    interpreter.interpret(syntax_tree)
+        # Stage 3: Execution
+        interpreter = Interpreter()
+        interpreter.interpret(syntax_tree)
+
+    except Exception as error:
+        print(error)
 
 
-source_code = """
-let age = 16 + 5
-print(age)
+def run_file(file_path):
 
-let count = 0
+    if not file_path.endswith(".pyra"):
+        print("PYRA Error: File must have a .pyra extension.")
+        return
 
-while count < 3 {
-    print(count)
-    count = count + 1
-}
+    try:
+        with open(file_path, "r", encoding="utf-8") as file:
+            source_code = file.read()
 
-fn add(a, b) {
-    return a + b
-}
+        run(source_code)
 
-let result = add(10, 20)
-print(result)
+    except FileNotFoundError:
+        print(f"PYRA Error: File '{file_path}' not found.")
 
-if result >= 30 {
-    print("PYRA is working!")
-} else {
-    print("Something went wrong")
-}
-"""
+    except OSError as error:
+        print(f"PYRA Error: Could not read file: {error}")
 
-run(source_code)
+
+if __name__ == "__main__":
+
+    if len(sys.argv) < 2:
+        print("PYRA Interpreter")
+        print("Usage: python main.py <file.pyra>")
+
+    else:
+        run_file(sys.argv[1])
