@@ -1,0 +1,18 @@
+
+# Variables and calculations
+
+let name = "Tanush"
+let age = 16
+
+let first_number = 25
+let second_number = 15
+
+let result = first_number + second_number
+
+print(name)
+print(age)
+print(result)
+
+age = age + 1
+
+print(age)
