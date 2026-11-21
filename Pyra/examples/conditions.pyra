@@ -1,0 +1,18 @@
+
+# If and else conditions
+
+let age = 18
+
+if age >= 18 {
+    print("You are an adult")
+} else {
+    print("You are a minor")
+}
+
+let marks = 85
+
+if marks >= 90 {
+    print("Grade A")
+} else {
+    print("Grade B")
+}
