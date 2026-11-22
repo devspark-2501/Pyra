@@ -1,1 +1,744 @@
-f
+# 🐍 PYRA — Programming Language & Interpreter
+
+**PYRA** is a custom programming language and interpreter built from scratch using Python.
+
+The project explores how programming languages work internally, from reading source code and breaking it into tokens to parsing expressions, generating an Abstract Syntax Tree (AST), and executing instructions.
+
+Instead of using an existing interpreter or compiler framework, PYRA implements its own Lexer, Parser, AST Nodes, Environment, and Interpreter.
+
+> 🚀 The goal of PYRA is to understand how programming languages are designed and executed by building one from the ground up.
+
+---
+
+## 📌 Table of Contents
+
+1. [Project Overview](#-project-overview)
+2. [Features](#-features)
+3. [Technology Stack](#-technology-stack)
+4. [Project Structure](#-project-structure)
+5. [How PYRA Works](#-how-pyra-works)
+6. [Installation](#-installation)
+7. [Running PYRA](#-running-pyra)
+8. [PYRA Language Syntax](#-pyra-language-syntax)
+9. [Understanding the Source Code](#-understanding-the-source-code)
+10. [Error Handling](#-error-handling)
+11. [Current Limitations](#-current-limitations)
+12. [Future Improvements](#-future-improvements)
+13. [Author](#-author)
+
+---
+
+## 📖 Project Overview
+
+PYRA is an educational programming language project that implements a **tree-walk interpreter**.
+
+A tree-walk interpreter executes a program by traversing its Abstract Syntax Tree and evaluating its nodes.
+
+When a user writes a PYRA program, the source code passes through three main stages:
+
+1. **Lexical Analysis:** Converts source code into tokens.
+2. **Syntax Analysis:** Converts tokens into an Abstract Syntax Tree.
+3. **Interpretation:** Evaluates the AST and executes the program.
+
+### Example PYRA Program
+
+```python
+let name = "Tanush"
+let age = 16
+
+fn greet(name) {
+    print("Hello!")
+    print(name)
+}
+
+greet(name)
+
+if age >= 16 {
+    print("Welcome to PYRA!")
+}
+```
+
+### Output
+
+```text
+Hello!
+Tanush
+Welcome to PYRA!
+```
+
+---
+
+## ✨ Features
+
+### Language Features
+
+- Variable declaration using `let`
+- Variable assignment
+- Integer and floating-point numbers
+- String values
+- Boolean values
+- Arithmetic operations
+- Comparison operators
+- Logical operators
+- If and else conditions
+- While loops
+- Function declarations
+- Function calls
+- Function parameters
+- Return statements
+- Nested execution scopes
+- Single-line comments using `#`
+
+### Interpreter Features
+
+- Custom lexical analyzer
+- Custom syntax parser
+- Abstract Syntax Tree (AST)
+- Tree-walk execution engine
+- Variable environment and scope management
+- Function closures
+- Runtime value handling
+- Custom error classes
+
+---
+
+## 🛠️ Technology Stack
+
+| Technology | Purpose |
+|---|---|
+| Python 3 | Core implementation language |
+| Object-Oriented Programming | Organizing interpreter components |
+| Data Structures | Managing tokens, AST nodes and environments |
+| Python Classes | Implementing Lexer, Parser and Interpreter |
+
+**Dependencies:** No third-party Python packages are currently required.
+
+---
+
+## 📂 Project Structure
+
+```text
+Pyra/
+│
+├── main.py
+│
+├── lexer/
+│   ├── __init__.py
+│   ├── tokens.py
+│   └── lexer.py
+│
+├── parser/
+│   ├── __init__.py
+│   ├── parser.py
+│   └── nodes.py
+│
+├── interpreter/
+│   ├── __init__.py
+│   ├── interpreter.py
+│   ├── environment.py
+│   └── runtime_values.py
+│
+├── errors/
+│   ├── __init__.py
+│   └── errors.py
+│
+├── examples/
+│   ├── hello.pyra
+│   ├── variables.pyra
+│   ├── conditions.pyra
+│   ├── loops.pyra
+│   └── functions.pyra
+│
+└── README.md
+```
+
+### Folder Responsibilities
+
+| Folder/File | Responsibility |
+|---|---|
+| `main.py` | Entry point of the interpreter |
+| `lexer/` | Converts source code into tokens |
+| `parser/` | Parses tokens and constructs the AST |
+| `interpreter/` | Evaluates AST nodes and executes programs |
+| `errors/` | Defines custom PYRA error classes |
+| `examples/` | Contains programs written in PYRA |
+
+---
+
+## ⚙️ How PYRA Works
+
+PYRA follows a three-stage execution pipeline.
+
+```text
+        PYRA SOURCE CODE
+             |
+             v
+       LEXICAL ANALYSIS
+             |
+             v
+           TOKENS
+             |
+             v
+       SYNTAX ANALYSIS
+             |
+             v
+       ABSTRACT SYNTAX TREE
+             |
+             v
+        INTERPRETER
+             |
+             v
+        PROGRAM OUTPUT
+```
+
+### 1. Lexical Analysis — Lexer
+
+The Lexer is responsible for reading the source code character by character.
+
+It groups characters into meaningful units called **tokens**.
+
+For example:
+
+```python
+let age = 16 + 5
+```
+
+The Lexer generates tokens representing:
+
+```text
+LET
+IDENTIFIER(age)
+EQUALS
+NUMBER(16)
+PLUS
+NUMBER(5)
+EOF
+```
+
+The Lexer also recognizes keywords, strings, numbers, operators and symbols.
+
+**Files involved:**
+
+- `lexer/tokens.py`
+- `lexer/lexer.py`
+
+### 2. Syntax Analysis — Parser
+
+The Parser receives the tokens generated by the Lexer.
+
+It checks their arrangement according to PYRA's grammar and constructs an Abstract Syntax Tree.
+
+For example:
+
+```python
+let result = 10 + 20 * 3
+```
+
+The expression is represented conceptually as:
+
+```text
+VariableDeclaration
+       |
+       v
+     result
+       |
+       v
+     Addition
+      /   \
+    10   Multiplication
+          /        \
+         20         3
+```
+
+Notice that multiplication is evaluated before addition because the Parser implements operator precedence.
+
+The AST represents the structure of the program rather than simply storing its original source text.
+
+**Files involved:**
+
+- `parser/parser.py`
+- `parser/nodes.py`
+
+### 3. Interpretation — Interpreter
+
+The Interpreter receives the AST and executes it.
+
+It traverses the nodes, evaluates expressions, manages variables, executes conditions and loops, and calls functions.
+
+For example:
+
+```python
+let result = 10 + 20 * 3
+print(result)
+```
+
+The Interpreter evaluates the expression:
+
+```text
+20 * 3 = 60
+10 + 60 = 70
+```
+
+It stores the result in the environment and prints:
+
+```text
+70
+```
+
+**Files involved:**
+
+- `interpreter/interpreter.py`
+- `interpreter/environment.py`
+- `interpreter/runtime_values.py`
+
+---
+
+## 💻 Installation
+
+### Prerequisites
+
+Make sure Python 3 is installed.
+
+Check your Python version:
+
+```bash
+python --version
+```
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/devspark-2501/Pyra.git
+```
+
+Navigate into the project directory:
+
+```bash
+cd Pyra
+```
+
+If your repository contains an additional nested `Pyra` directory, enter that directory as well.
+
+No additional package installation is currently required.
+
+---
+
+## ▶️ Running PYRA
+
+PYRA executes source files with the `.pyra` extension.
+
+### Run Your First Program
+
+```bash
+python main.py examples/hello.pyra
+```
+
+### Run Other Examples
+
+Variables:
+
+```bash
+python main.py examples/variables.pyra
+```
+
+Conditions:
+
+```bash
+python main.py examples/conditions.pyra
+```
+
+Loops:
+
+```bash
+python main.py examples/loops.pyra
+```
+
+Functions:
+
+```bash
+python main.py examples/functions.pyra
+```
+
+### Create Your Own PYRA Program
+
+1. Open the `examples` folder.
+2. Create a new file named `my_program.pyra`.
+3. Write your PYRA code.
+4. Save the file.
+5. Run it using:
+
+```bash
+python main.py examples/my_program.pyra
+```
+
+---
+
+## 📝 PYRA Language Syntax
+
+This section demonstrates the syntax currently supported by the initial implementation.
+
+### 1. Variables
+
+Use `let` to declare a variable.
+
+```python
+let name = "Tanush"
+let age = 16
+let score = 95.5
+let is_learning = true
+```
+
+Variables can also be reassigned:
+
+```python
+let age = 16
+
+age = 17
+
+print(age)
+```
+
+### 2. Data Types
+
+PYRA currently supports:
+
+| Data Type | Example |
+|---|---|
+| Number | `let age = 16` |
+| Decimal | `let price = 99.5` |
+| String | `let name = "PYRA"` |
+| Boolean | `let active = true` |
+| Boolean | `let active = false` |
+
+### 3. Arithmetic Operators
+
+```python
+let a = 20
+let b = 10
+
+print(a + b)
+print(a - b)
+print(a * b)
+print(a / b)
+print(a % b)
+```
+
+Supported operators:
+
+| Operator | Operation |
+|---|---|
+| `+` | Addition |
+| `-` | Subtraction |
+| `*` | Multiplication |
+| `/` | Division |
+| `%` | Modulo |
+
+### 4. Comparison Operators
+
+```python
+let a = 20
+let b = 10
+
+print(a == b)
+print(a != b)
+print(a > b)
+print(a < b)
+print(a >= b)
+print(a <= b)
+```
+
+### 5. Logical Operators
+
+```python
+let age = 18
+let has_permission = true
+
+if age >= 18 and has_permission {
+    print("Access granted")
+}
+```
+
+Supported logical operators:
+
+- `and`
+- `or`
+- `not`
+
+### 6. Conditions
+
+PYRA supports `if` and `else`.
+
+```python
+let marks = 85
+
+if marks >= 90 {
+    print("Grade A")
+} else {
+    print("Grade B")
+}
+```
+
+### 7. While Loops
+
+```python
+let count = 1
+
+while count <= 5 {
+    print(count)
+
+    count = count + 1
+}
+```
+
+### 8. Functions
+
+Functions are declared using `fn`.
+
+```python
+fn greet(name) {
+    print("Hello!")
+    print(name)
+}
+
+greet("Tanush")
+```
+
+### 9. Return Statements
+
+Functions can return values.
+
+```python
+fn add(a, b) {
+    return a + b
+}
+
+let result = add(10, 20)
+
+print(result)
+```
+
+### 10. Comments
+
+Use `#` for single-line comments.
+
+```python
+# This is a PYRA comment
+
+let age = 16
+
+print(age)
+```
+
+---
+
+## 🧠 Understanding the Source Code
+
+### `main.py`
+
+The main entry point connects all the interpreter components.
+
+Its responsibilities are:
+
+- Read a `.pyra` source file.
+- Initialize the Lexer.
+- Generate tokens.
+- Initialize the Parser.
+- Generate the AST.
+- Initialize the Interpreter.
+- Execute the AST.
+- Display errors when execution fails.
+
+The main execution flow is:
+
+```python
+lexer = Lexer(source_code)
+tokens = lexer.tokenize()
+
+parser = Parser(tokens)
+syntax_tree = parser.parse()
+
+interpreter = Interpreter()
+interpreter.interpret(syntax_tree)
+```
+
+### `lexer/tokens.py`
+
+Defines the token types used throughout PYRA.
+
+A Token stores:
+
+- Token type
+- Token value
+- Source line
+- Source column
+
+The Lexer and Parser use these token definitions to communicate.
+
+### `lexer/lexer.py`
+
+Contains the `Lexer` class.
+
+Important methods:
+
+| Method | Purpose |
+|---|---|
+| `current_char()` | Returns the current character |
+| `peek()` | Looks at the next character |
+| `advance()` | Moves to the next character |
+| `read_number()` | Reads numeric values |
+| `read_identifier()` | Reads identifiers and keywords |
+| `read_string()` | Reads string literals |
+| `skip_comment()` | Skips comments |
+| `tokenize()` | Generates the complete token list |
+
+### `parser/nodes.py`
+
+Contains the classes used to represent AST nodes.
+
+Examples include:
+
+- `NumberNode`
+- `StringNode`
+- `BooleanNode`
+- `VariableNode`
+- `BinaryOperationNode`
+- `FunctionCallNode`
+- `IfNode`
+- `WhileNode`
+- `FunctionDeclarationNode`
+- `ReturnNode`
+- `ProgramNode`
+
+Each class represents a different type of language construct.
+
+### `parser/parser.py`
+
+Contains the `Parser` class.
+
+It uses recursive descent parsing to convert tokens into AST nodes.
+
+The expression parser is divided into precedence levels:
+
+1. Logical OR
+2. Logical AND
+3. Equality
+4. Comparison
+5. Addition and subtraction
+6. Multiplication, division and modulo
+7. Unary operations
+8. Primary expressions
+
+This allows PYRA to evaluate expressions according to operator precedence.
+
+### `interpreter/environment.py`
+
+Contains the `Environment` class.
+
+The environment stores variables in a Python dictionary.
+
+It supports:
+
+- Defining variables
+- Retrieving variables
+- Updating variables
+- Creating child environments
+- Searching parent environments
+
+Nested environments make it possible to implement local and surrounding scopes.
+
+### `interpreter/runtime_values.py`
+
+Contains runtime-specific classes.
+
+`PyraFunction` stores a function declaration and its surrounding environment.
+
+`ReturnSignal` carries a returned value through function execution.
+
+### `interpreter/interpreter.py`
+
+Contains the main `Interpreter` class.
+
+It executes statements and evaluates expressions.
+
+Its responsibilities include:
+
+- Variable declarations and assignments
+- Arithmetic and logical evaluation
+- Conditions and loops
+- Function declarations and calls
+- Return values
+- Scope management
+
+### `errors/errors.py`
+
+Defines custom PYRA error classes.
+
+These include:
+
+- `PyraError`
+- `PyraSyntaxError`
+- `PyraRuntimeError`
+- `PyraNameError`
+- `PyraTypeError`
+- `PyraZeroDivisionError`
+
+The custom error system is currently defined but has not yet been fully integrated into every component.
+
+---
+
+## ⚠️ Current Limitations
+
+PYRA is an early-stage interpreter and is still under development.
+
+Some features and improvements are not implemented yet.
+
+- Newlines are currently ignored by the Lexer rather than treated as explicit statement boundaries.
+- Lists and dictionaries are not implemented.
+- Indexing and member access are not implemented.
+- Built-in PYRA functions are not implemented.
+- Function arguments currently support positional arguments.
+- Error handling still relies partly on Python exceptions.
+- The custom error classes are not yet fully integrated.
+- The language grammar and parser still need additional validation.
+
+The current implementation is intended as a foundation for future development, not a production-ready programming language.
+
+---
+
+## 🚀 Future Improvements
+
+Planned development includes:
+
+- [ ] Improve lexical and syntax error reporting.
+- [ ] Add proper newline and statement handling.
+- [ ] Add lists and dictionaries.
+- [ ] Add indexing and collection operations.
+- [ ] Implement built-in functions.
+- [ ] Add more data types.
+- [ ] Add `for` loops.
+- [ ] Add `break` and `continue`.
+- [ ] Improve function handling and recursion.
+- [ ] Add a REPL (interactive PYRA shell).
+- [ ] Improve runtime error handling.
+- [ ] Add modules and imports.
+- [ ] Add more examples and automated tests.
+
+---
+
+## 👨‍💻 Author
+
+**Tanush Mathur**
+
+Full-Stack Developer | Programming Language Enthusiast
+
+- GitHub: [@devspark-2501](https://github.com/devspark-2501)
+
+---
+
+## ⭐ Support
+
+If you find this project interesting, consider giving the repository a star!
+
+PYRA is an ongoing learning and development project focused on understanding programming languages, interpreters, parsing, and compiler fundamentals.
+
+**Built with Python. Designed to explore how programming languages work.** 🐍⚡
